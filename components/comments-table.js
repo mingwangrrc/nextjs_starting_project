@@ -25,5 +25,12 @@ export default function CommentsTable({ comments }) {
     },
   ];
 
-  return <EditableTable data={comments} columns={columns} rowKey="id" />;
+  return (
+    <EditableTable
+      data={comments}
+      columns={columns}
+      rowKey="id"
+      storageKey="comments"
+    />
+  );
 }

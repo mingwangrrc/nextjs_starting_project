@@ -19,5 +19,12 @@ export default function AlbumsTable({ albums }) {
     },
   ];
 
-  return <EditableTable data={albums} columns={columns} rowKey="id" />;
+  return (
+    <EditableTable
+      data={albums}
+      columns={columns}
+      rowKey="id"
+      storageKey="albums"
+    />
+  );
 }
