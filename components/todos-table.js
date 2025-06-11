@@ -1,6 +1,6 @@
 'use client';
 
-import EditableTable from './editable-table';
+import { Table } from 'antd';
 import Link from 'next/link';
 
 export default function TodosTable({ todos }) {
@@ -19,5 +19,5 @@ export default function TodosTable({ todos }) {
     },
   ];
 
-  return <EditableTable data={todos} columns={columns} />;
+  return <Table dataSource={todos} columns={columns} rowKey="id" pagination={false} />;
 }
