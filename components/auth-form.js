@@ -9,6 +9,7 @@ export default function AuthForm({
   includeUsername,
   includeEmail = true,
   initialValues = {},
+  variant = 'outlined',
 }) {
   const [form] = Form.useForm();
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function AuthForm({
           name="name"
           rules={[{ required: true, message: 'Please enter your name' }]}
         >
-          <Input placeholder="Name" />
+          <Input placeholder="Name" variant={variant} />
         </Form.Item>
       )}
       {includeUsername && (
@@ -44,7 +45,7 @@ export default function AuthForm({
           name="username"
           rules={[{ required: true, message: 'Please enter your username' }]}
         >
-          <Input placeholder="Username" />
+          <Input placeholder="Username" variant={variant} />
         </Form.Item>
       )}
       {includeEmail && (
@@ -53,7 +54,7 @@ export default function AuthForm({
           name="email"
           rules={[{ required: true, message: 'Please enter your email' }]}
         >
-          <Input type="email" placeholder="Email" />
+          <Input type="email" placeholder="Email" variant={variant} />
         </Form.Item>
       )}
       <Form.Item
@@ -61,7 +62,7 @@ export default function AuthForm({
         name="password"
         rules={[{ required: true, message: 'Please enter your password' }]}
       >
-        <Input.Password placeholder="Password" />
+        <Input.Password placeholder="Password" variant={variant} />
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" block>

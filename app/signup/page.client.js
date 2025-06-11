@@ -34,6 +34,7 @@ function SignUpPageClient() {
         includeName
         includeUsername
         onSubmit={handleSignUp}
+        variant="filled"
       />
     </main>
   );
