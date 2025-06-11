@@ -117,10 +117,10 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
         const editable = record[rowKey] === editingId;
         return editable ? (
           <>
-            <Button type="link" onClick={save}>
+            <Button key="save" type="link" onClick={save}>
               Save
             </Button>
-            <Button type="link" onClick={cancel}>
+            <Button key="cancel" type="link" onClick={cancel}>
               Cancel
             </Button>
           </>
