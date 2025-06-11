@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import classes from './main-header.module.css';
+import LanguageDropdown from './language-dropdown';
 
 export default function MainHeader() {
   const [username, setUsername] = useState('');
@@ -84,6 +85,9 @@ export default function MainHeader() {
               </li>
             </>
           )}
+          <li>
+            <LanguageDropdown />
+          </li>
         </ul>
       </nav>
     </header>
