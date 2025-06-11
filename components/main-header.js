@@ -23,6 +23,9 @@ export default function MainHeader() {
           <li>
             <Link href="/comments">Comments</Link>
           </li>
+          <li>
+            <Link href="/todos">Todos</Link>
+          </li>
         </ul>
       </nav>
     </header>
