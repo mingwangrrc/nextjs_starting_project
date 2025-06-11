@@ -35,3 +35,17 @@
 .header nav a:active {
   color: #bd3df4;
 }
+
+.signOut {
+  background: none;
+  border: none;
+  color: #f4c33d;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.signOut:hover,
+.signOut:active {
+  color: #bd3df4;
+}

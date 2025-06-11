@@ -21,6 +21,8 @@ Open `http://localhost:3000` in your browser to view the app.
 - Editable table rows for all lists
 - Search tables by any field
 - Editable tags for each row
+- User login with sign out option
+- Profile page to edit your account details
 
 ## Build
 

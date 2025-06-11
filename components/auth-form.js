@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 
 export default function AuthForm({
@@ -8,8 +8,12 @@ export default function AuthForm({
   includeName,
   includeUsername,
   includeEmail = true,
+  initialValues = {},
 }) {
   const [form] = Form.useForm();
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [initialValues, form]);
   const handleFinish = (values) => {
     if (onSubmit) {
       onSubmit(values);

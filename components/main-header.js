@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import classes from './main-header.module.css';
 
 export default function MainHeader() {
   const [username, setUsername] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     const updateUser = () => {
@@ -25,6 +27,13 @@ export default function MainHeader() {
     window.addEventListener('userChange', updateUser);
     return () => window.removeEventListener('userChange', updateUser);
   }, []);
+
+  const handleSignOut = () => {
+    if (typeof window === 'undefined') return;
+    localStorage.removeItem('currentUser');
+    window.dispatchEvent(new Event('userChange'));
+    router.push('/login');
+  };
 
   return (
     <header className={classes.header}>
@@ -54,12 +63,27 @@ export default function MainHeader() {
           <li>
             <Link href="/albums">Albums</Link>
           </li>
-          <li>
-            <Link href="/login">Login</Link>
-          </li>
-          <li>
-            <Link href="/signup">Sign Up</Link>
-          </li>
+          {username ? (
+            <>
+              <li>
+                <Link href="/profile">Profile</Link>
+              </li>
+              <li>
+                <button onClick={handleSignOut} className={classes.signOut}>
+                  Sign Out
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link href="/login">Login</Link>
+              </li>
+              <li>
+                <Link href="/signup">Sign Up</Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>
