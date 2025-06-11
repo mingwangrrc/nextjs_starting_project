@@ -2,7 +2,8 @@ import AlbumsTable from '@/components/albums-table';
 
 export default async function AlbumsPage() {
   const response = await fetch('https://jsonplaceholder.typicode.com/albums');
-  const albums = await response.json();
+  const albumsData = await response.json();
+  const albums = albumsData.map((album) => ({ ...album, tags: '' }));
 
   return (
     <main>

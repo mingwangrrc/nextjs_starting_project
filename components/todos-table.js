@@ -17,6 +17,12 @@ export default function TodosTable({ todos }) {
       key: 'completed',
       editable: true,
     },
+    {
+      title: 'Tags',
+      dataIndex: 'tags',
+      key: 'tags',
+      editable: true,
+    },
   ];
 
   return (

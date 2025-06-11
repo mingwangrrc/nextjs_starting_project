@@ -17,6 +17,12 @@ export default function AlbumsTable({ albums }) {
       key: 'userId',
       editable: true,
     },
+    {
+      title: 'Tags',
+      dataIndex: 'tags',
+      key: 'tags',
+      editable: true,
+    },
   ];
 
   return (

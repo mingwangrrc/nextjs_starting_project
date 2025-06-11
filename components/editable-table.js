@@ -8,6 +8,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
   const [tableData, setTableData] = useState(data);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({});
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     if (!storageKey || typeof window === 'undefined') return;
@@ -113,5 +114,27 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     },
   });
 
-  return <Table dataSource={tableData} columns={cols} rowKey={rowKey} pagination={false} />;
+  const filteredData = tableData.filter((row) => {
+    if (!search) return true;
+    const values = Object.values(row).join(' ').toLowerCase();
+    return values.includes(search.toLowerCase());
+  });
+
+  return (
+    <>
+      <Input
+        placeholder="Search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{ marginBottom: 16 }}
+        allowClear
+      />
+      <Table
+        dataSource={filteredData}
+        columns={cols}
+        rowKey={rowKey}
+        pagination={false}
+      />
+    </>
+  );
 }

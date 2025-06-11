@@ -2,7 +2,8 @@ import CommentsTable from '@/components/comments-table';
 
 export default async function CommentsPage() {
   const response = await fetch('https://jsonplaceholder.typicode.com/comments');
-  const comments = await response.json();
+  const commentsData = await response.json();
+  const comments = commentsData.map((comment) => ({ ...comment, tags: '' }));
 
   return (
     <main>
