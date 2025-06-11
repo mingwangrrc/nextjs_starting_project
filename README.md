@@ -7,6 +7,8 @@ This project is a small Next.js application using Ant Design tables to display d
 Install dependencies and start the development server:
 
 ```bash
+cd ~/desktop
+cd nextjs_starting_project
 npm install
 npm run dev
 ```
