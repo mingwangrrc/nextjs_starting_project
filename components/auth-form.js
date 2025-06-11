@@ -2,7 +2,13 @@
 import { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 
-export default function AuthForm({ onSubmit, submitText, includeName }) {
+export default function AuthForm({
+  onSubmit,
+  submitText,
+  includeName,
+  includeUsername,
+  includeEmail = true,
+}) {
   const [form] = Form.useForm();
   const handleFinish = (values) => {
     if (onSubmit) {
@@ -25,22 +31,33 @@ export default function AuthForm({ onSubmit, submitText, includeName }) {
           name="name"
           rules={[{ required: true, message: 'Please enter your name' }]}
         >
-          <Input />
+          <Input placeholder="Name" />
         </Form.Item>
       )}
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[{ required: true, message: 'Please enter your email' }]}
-      >
-        <Input type="email" />
-      </Form.Item>
+      {includeUsername && (
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: 'Please enter your username' }]}
+        >
+          <Input placeholder="Username" />
+        </Form.Item>
+      )}
+      {includeEmail && (
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[{ required: true, message: 'Please enter your email' }]}
+        >
+          <Input type="email" placeholder="Email" />
+        </Form.Item>
+      )}
       <Form.Item
         label="Password"
         name="password"
         rules={[{ required: true, message: 'Please enter your password' }]}
       >
-        <Input.Password />
+        <Input.Password placeholder="Password" />
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" block>

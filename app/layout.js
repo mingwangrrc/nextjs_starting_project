@@ -1,4 +1,5 @@
-import './globals.css'
+import 'antd/dist/reset.css';
+import './globals.css';
 import MainHeader from '@/components/main-header';
 
 export const metadata = {

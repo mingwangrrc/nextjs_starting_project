@@ -51,3 +51,7 @@ p a:active {
   color: #bd3df4;
   border-color: #bd3df4;
 }
+
+label {
+  color: #ddd8e4;
+}
