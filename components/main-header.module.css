@@ -12,6 +12,12 @@
   filter: drop-shadow(0 0 2px #f4c33d);
 }
 
+.username {
+  margin-left: 0.5rem;
+  color: #f4c33d;
+  font-weight: bold;
+}
+
 .header nav ul {
   display: flex;
   list-style: none;

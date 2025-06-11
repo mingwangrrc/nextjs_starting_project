@@ -1,13 +1,38 @@
+"use client";
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import classes from './main-header.module.css';
 
 export default function MainHeader() {
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const updateUser = () => {
+      if (typeof window === 'undefined') return;
+      try {
+        const stored = localStorage.getItem('currentUser');
+        if (stored) {
+          setUsername(JSON.parse(stored).username || '');
+        } else {
+          setUsername('');
+        }
+      } catch {
+        setUsername('');
+      }
+    };
+
+    updateUser();
+    window.addEventListener('userChange', updateUser);
+    return () => window.removeEventListener('userChange', updateUser);
+  }, []);
+
   return (
     <header className={classes.header}>
       <div className={classes.logo}>
         <Link href="/">
           <img src="/logo.png" alt="NextJS Logo" />
         </Link>
+        {username && <span className={classes.username}>{username}</span>}
       </div>
       <nav>
         <ul>
