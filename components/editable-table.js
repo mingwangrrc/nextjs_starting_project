@@ -1,13 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, Input, Button, Checkbox } from 'antd';
 import Link from 'next/link';
 
-export default function EditableTable({ data, columns, rowKey }) {
+export default function EditableTable({ data, columns, rowKey, storageKey }) {
   const [tableData, setTableData] = useState(data);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    if (!storageKey || typeof window === 'undefined') return;
+    const stored = localStorage.getItem(storageKey);
+    if (stored) {
+      try {
+        setTableData(JSON.parse(stored));
+      } catch {
+        localStorage.removeItem(storageKey);
+        localStorage.setItem(storageKey, JSON.stringify(data));
+      }
+    } else {
+      localStorage.setItem(storageKey, JSON.stringify(data));
+    }
+  }, [data, storageKey]);
 
   const edit = (record) => {
     setEditingId(record[rowKey]);
@@ -20,9 +35,15 @@ export default function EditableTable({ data, columns, rowKey }) {
   };
 
   const save = () => {
-    setTableData((prev) =>
-      prev.map((row) => (row[rowKey] === editingId ? formData : row))
-    );
+    setTableData((prev) => {
+      const updated = prev.map((row) =>
+        row[rowKey] === editingId ? formData : row
+      );
+      if (storageKey && typeof window !== 'undefined') {
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+      }
+      return updated;
+    });
     cancel();
   };
 

@@ -19,5 +19,12 @@ export default function TodosTable({ todos }) {
     },
   ];
 
-  return <EditableTable data={todos} columns={columns} rowKey="id" />;
+  return (
+    <EditableTable
+      data={todos}
+      columns={columns}
+      rowKey="id"
+      storageKey="todos"
+    />
+  );
 }

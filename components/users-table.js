@@ -25,5 +25,12 @@ export default function UsersTable({ users }) {
     },
   ];
 
-  return <EditableTable data={users} columns={columns} rowKey="id" />;
+  return (
+    <EditableTable
+      data={users}
+      columns={columns}
+      rowKey="id"
+      storageKey="users"
+    />
+  );
 }

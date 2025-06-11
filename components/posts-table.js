@@ -19,5 +19,12 @@ export default function PostsTable({ posts }) {
     },
   ];
 
-  return <EditableTable data={posts} columns={columns} rowKey="id" />;
+  return (
+    <EditableTable
+      data={posts}
+      columns={columns}
+      rowKey="id"
+      storageKey="posts"
+    />
+  );
 }
