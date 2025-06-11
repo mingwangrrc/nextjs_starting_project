@@ -11,6 +11,7 @@ The application provides basic pages for the following resources:
 - **Comments** – shows comments
 - **Todos** – shows todo items
 - **Albums** – displays albums
+- **Photos** – displays photos with thumbnails
 
 Each page fetches the corresponding data on the server and renders a table component in the browser.
 
