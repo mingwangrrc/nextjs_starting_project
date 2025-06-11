@@ -1,5 +1,4 @@
 import Link from 'next/link';
-
 export default async function UserDetailPage({ params }) {
   const response = await fetch(`https://jsonplaceholder.typicode.com/users/${params.id}`);
   const user = await response.json();
