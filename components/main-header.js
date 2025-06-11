@@ -17,6 +17,9 @@ export default function MainHeader() {
           <li>
             <Link href="/users">Users</Link>
           </li>
+          <li>
+            <Link href="/posts">Posts</Link>
+          </li>
         </ul>
       </nav>
     </header>
