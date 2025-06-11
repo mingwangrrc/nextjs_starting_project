@@ -9,6 +9,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({});
   const [search, setSearch] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     if (!storageKey || typeof window === 'undefined') return;
@@ -25,7 +26,23 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     }
   }, [data, storageKey]);
 
+  useEffect(() => {
+    const updateLogin = () => {
+      if (typeof window === 'undefined') return;
+      try {
+        setIsLoggedIn(!!localStorage.getItem('currentUser'));
+      } catch {
+        setIsLoggedIn(false);
+      }
+    };
+
+    updateLogin();
+    window.addEventListener('userChange', updateLogin);
+    return () => window.removeEventListener('userChange', updateLogin);
+  }, []);
+
   const edit = (record) => {
+    if (!isLoggedIn) return;
     setEditingId(record[rowKey]);
     setFormData(record);
   };
@@ -92,27 +109,29 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     render: (text, record) => renderCell(col, record),
   }));
 
-  cols.push({
-    title: 'Actions',
-    key: 'actions',
-    render: (_, record) => {
-      const editable = record[rowKey] === editingId;
-      return editable ? (
-        <>
-          <Button type="link" onClick={save}>
-            Save
+  if (isLoggedIn) {
+    cols.push({
+      title: 'Actions',
+      key: 'actions',
+      render: (_, record) => {
+        const editable = record[rowKey] === editingId;
+        return editable ? (
+          <>
+            <Button type="link" onClick={save}>
+              Save
+            </Button>
+            <Button type="link" onClick={cancel}>
+              Cancel
+            </Button>
+          </>
+        ) : (
+          <Button type="link" onClick={() => edit(record)}>
+            Edit
           </Button>
-          <Button type="link" onClick={cancel}>
-            Cancel
-          </Button>
-        </>
-      ) : (
-        <Button type="link" onClick={() => edit(record)}>
-          Edit
-        </Button>
-      );
-    },
-  });
+        );
+      },
+    });
+  }
 
   const filteredData = tableData.filter((row) => {
     if (!search) return true;
