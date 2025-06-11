@@ -1,0 +1,31 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #1d1b23;
+}
+
+.logo img {
+  height: 3rem;
+  width: 3rem;
+  filter: drop-shadow(0 0 2px #f4c33d);
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1rem;
+}
+
+nav a {
+  color: #f4c33d;
+  text-decoration: none;
+}
+
+nav a:hover,
+nav a:active {
+  color: #bd3df4;
+}
