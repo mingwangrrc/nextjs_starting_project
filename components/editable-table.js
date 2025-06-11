@@ -58,6 +58,10 @@ export default function EditableTable({ data, columns, rowKey }) {
       return <Link href={href}>{record[col.dataIndex]}</Link>;
     }
 
+    if (typeof record[col.dataIndex] === 'boolean') {
+      return record[col.dataIndex] ? 'Yes' : 'No';
+    }
+
     return record[col.dataIndex];
   };
 
