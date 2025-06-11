@@ -1,6 +1,6 @@
 'use client';
 
-import { Table } from 'antd';
+import EditableTable from './editable-table';
 import Link from 'next/link';
 
 export default function AlbumsTable({ albums }) {
@@ -18,5 +18,5 @@ export default function AlbumsTable({ albums }) {
     },
   ];
 
-  return <Table dataSource={albums} columns={columns} rowKey="id" pagination={false} />;
+  return <EditableTable data={albums} columns={columns} />;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { Table } from 'antd';
+import EditableTable from './editable-table';
 import Link from 'next/link';
 
 export default function UsersTable({ users }) {
@@ -23,5 +23,5 @@ export default function UsersTable({ users }) {
     },
   ];
 
-  return <Table dataSource={users} columns={columns} rowKey="id" pagination={false} />;
+  return <EditableTable data={users} columns={columns} />;
 }

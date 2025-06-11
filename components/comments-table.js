@@ -1,6 +1,6 @@
 'use client';
 
-import { Table } from 'antd';
+import EditableTable from './editable-table';
 import Link from 'next/link';
 
 export default function CommentsTable({ comments }) {
@@ -23,5 +23,5 @@ export default function CommentsTable({ comments }) {
     },
   ];
 
-  return <Table dataSource={comments} columns={columns} rowKey="id" pagination={false} />;
+  return <EditableTable data={comments} columns={columns} />;
 }
