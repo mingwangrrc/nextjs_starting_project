@@ -29,6 +29,12 @@ export default function MainHeader() {
           <li>
             <Link href="/albums">Albums</Link>
           </li>
+          <li>
+            <Link href="/login">Login</Link>
+          </li>
+          <li>
+            <Link href="/signup">Sign Up</Link>
+          </li>
         </ul>
       </nav>
     </header>
