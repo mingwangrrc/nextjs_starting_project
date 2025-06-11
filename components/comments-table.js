@@ -23,6 +23,12 @@ export default function CommentsTable({ comments }) {
       key: 'body',
       editable: true,
     },
+    {
+      title: 'Tags',
+      dataIndex: 'tags',
+      key: 'tags',
+      editable: true,
+    },
   ];
 
   return (

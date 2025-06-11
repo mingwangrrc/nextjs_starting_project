@@ -2,7 +2,8 @@ import TodosTable from '@/components/todos-table';
 
 export default async function TodosPage() {
   const response = await fetch('https://jsonplaceholder.typicode.com/todos');
-  const todos = await response.json();
+  const todosData = await response.json();
+  const todos = todosData.map((todo) => ({ ...todo, tags: '' }));
 
   return (
     <main>
