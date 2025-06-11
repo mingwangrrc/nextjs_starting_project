@@ -8,7 +8,7 @@ export default function SignUpPage() {
   return (
     <main>
       <h1>Sign Up</h1>
-      <AuthForm submitText="Create Account" includeName />
+      <AuthForm submitText="Create Account" includeName includeUsername />
     </main>
   );
 }

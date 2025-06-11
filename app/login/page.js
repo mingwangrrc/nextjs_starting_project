@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <main>
       <h1>Login</h1>
-      <AuthForm submitText="Login" />
+      <AuthForm submitText="Login" includeUsername includeEmail={false} />
     </main>
   );
 }
