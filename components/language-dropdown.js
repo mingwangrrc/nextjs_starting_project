@@ -18,6 +18,7 @@ export default function LanguageDropdown() {
     setLanguage(key);
     if (typeof window !== 'undefined') {
       localStorage.setItem('language', key);
+      window.dispatchEvent(new Event('languageChange'));
     }
   };
 
@@ -28,7 +29,7 @@ export default function LanguageDropdown() {
 
   return (
     <Dropdown menu={{ items, onClick: handleMenuClick }} placement="bottomRight">
-      <Button>{language === 'en' ? 'English' : 'French'}</Button>
+      <Button>{language === 'en' ? 'English' : 'Français'}</Button>
     </Dropdown>
   );
 }
