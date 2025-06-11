@@ -29,9 +29,6 @@ export default function MainHeader() {
           <li>
             <Link href="/albums">Albums</Link>
           </li>
-          <li>
-            <Link href="/photos">Photos</Link>
-          </li>
         </ul>
       </nav>
     </header>

@@ -1,6 +1,6 @@
 'use client';
 
-import EditableTable from './editable-table';
+import { Table } from 'antd';
 import Link from 'next/link';
 
 export default function PostsTable({ posts }) {
@@ -18,5 +18,5 @@ export default function PostsTable({ posts }) {
     },
   ];
 
-  return <EditableTable data={posts} columns={columns} />;
+  return <Table dataSource={posts} columns={columns} rowKey="id" pagination={false} />;
 }
