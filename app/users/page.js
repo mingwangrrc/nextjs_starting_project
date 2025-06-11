@@ -1,4 +1,5 @@
 import { Table } from 'antd';
+import Link from 'next/link';
 
 export default async function UsersPage() {
   const response = await fetch('https://jsonplaceholder.typicode.com/users');
@@ -9,6 +10,7 @@ export default async function UsersPage() {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      render: (text, record) => <Link href={`/users/${record.id}`}>{text}</Link>,
     },
     {
       title: 'Email',
