@@ -1,7 +1,6 @@
 'use client';
 
-import { Table } from 'antd';
-import Link from 'next/link';
+import EditableTable from './editable-table';
 
 export default function PostsTable({ posts }) {
   const columns = [
@@ -9,14 +8,16 @@ export default function PostsTable({ posts }) {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      render: (text, record) => <Link href={`/posts/${record.id}`}>{text}</Link>,
+      editable: true,
+      renderLink: (record) => `/posts/${record.id}`,
     },
     {
       title: 'Body',
       dataIndex: 'body',
       key: 'body',
+      editable: true,
     },
   ];
 
-  return <Table dataSource={posts} columns={columns} rowKey="id" pagination={false} />;
+  return <EditableTable data={posts} columns={columns} rowKey="id" />;
 }

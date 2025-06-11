@@ -1,7 +1,6 @@
 'use client';
 
-import { Table } from 'antd';
-import Link from 'next/link';
+import EditableTable from './editable-table';
 
 export default function AlbumsTable({ albums }) {
   const columns = [
@@ -9,14 +8,16 @@ export default function AlbumsTable({ albums }) {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      render: (text, record) => <Link href={`/albums/${record.id}`}>{text}</Link>,
+      editable: true,
+      renderLink: (record) => `/albums/${record.id}`,
     },
     {
       title: 'User ID',
       dataIndex: 'userId',
       key: 'userId',
+      editable: true,
     },
   ];
 
-  return <Table dataSource={albums} columns={columns} rowKey="id" pagination={false} />;
+  return <EditableTable data={albums} columns={columns} rowKey="id" />;
 }

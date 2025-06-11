@@ -1,7 +1,6 @@
 'use client';
 
-import { Table } from 'antd';
-import Link from 'next/link';
+import EditableTable from './editable-table';
 
 export default function CommentsTable({ comments }) {
   const columns = [
@@ -9,19 +8,22 @@ export default function CommentsTable({ comments }) {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) => <Link href={`/comments/${record.id}`}>{text}</Link>,
+      editable: true,
+      renderLink: (record) => `/comments/${record.id}`,
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      editable: true,
     },
     {
       title: 'Body',
       dataIndex: 'body',
       key: 'body',
+      editable: true,
     },
   ];
 
-  return <Table dataSource={comments} columns={columns} rowKey="id" pagination={false} />;
+  return <EditableTable data={comments} columns={columns} rowKey="id" />;
 }

@@ -1,7 +1,6 @@
 'use client';
 
-import { Table } from 'antd';
-import Link from 'next/link';
+import EditableTable from './editable-table';
 
 export default function UsersTable({ users }) {
   const columns = [
@@ -9,19 +8,22 @@ export default function UsersTable({ users }) {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) => <Link href={`/users/${record.id}`}>{text}</Link>,
+      editable: true,
+      renderLink: (record) => `/users/${record.id}`,
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      editable: true,
     },
     {
       title: 'City',
-      dataIndex: ['address', 'city'],
+      dataIndex: 'city',
       key: 'city',
+      editable: true,
     },
   ];
 
-  return <Table dataSource={users} columns={columns} rowKey="id" pagination={false} />;
+  return <EditableTable data={users} columns={columns} rowKey="id" />;
 }
