@@ -7,7 +7,36 @@ import LanguageDropdown from './language-dropdown';
 
 export default function MainHeader() {
   const [username, setUsername] = useState('');
+  const [language, setLanguage] = useState('en');
   const router = useRouter();
+
+  const labels = {
+    en: {
+      home: 'Home',
+      users: 'Users',
+      posts: 'Posts',
+      comments: 'Comments',
+      todos: 'Todos',
+      albums: 'Albums',
+      login: 'Login',
+      signup: 'Sign Up',
+      profile: 'Profile',
+      signOut: 'Sign Out',
+    },
+    fr: {
+      home: 'Accueil',
+      users: 'Utilisateurs',
+      posts: 'Articles',
+      comments: 'Commentaires',
+      todos: 'Tâches',
+      albums: 'Albums',
+      login: 'Connexion',
+      signup: "S'inscrire",
+      profile: 'Profil',
+      signOut: 'Déconnexion',
+    },
+  };
+  const t = labels[language] || labels.en;
 
   useEffect(() => {
     const updateUser = () => {
@@ -29,6 +58,18 @@ export default function MainHeader() {
     return () => window.removeEventListener('userChange', updateUser);
   }, []);
 
+  useEffect(() => {
+    const updateLanguage = () => {
+      if (typeof window === 'undefined') return;
+      const stored = localStorage.getItem('language');
+      setLanguage(stored || 'en');
+    };
+
+    updateLanguage();
+    window.addEventListener('languageChange', updateLanguage);
+    return () => window.removeEventListener('languageChange', updateLanguage);
+  }, []);
+
   const handleSignOut = () => {
     if (typeof window === 'undefined') return;
     localStorage.removeItem('currentUser');
@@ -47,41 +88,41 @@ export default function MainHeader() {
       <nav>
         <ul>
           <li>
-            <Link href="/">Home</Link>
+            <Link href="/">{t.home}</Link>
           </li>
           <li>
-            <Link href="/users">Users</Link>
+            <Link href="/users">{t.users}</Link>
           </li>
           <li>
-            <Link href="/posts">Posts</Link>
+            <Link href="/posts">{t.posts}</Link>
           </li>
           <li>
-            <Link href="/comments">Comments</Link>
+            <Link href="/comments">{t.comments}</Link>
           </li>
           <li>
-            <Link href="/todos">Todos</Link>
+            <Link href="/todos">{t.todos}</Link>
           </li>
           <li>
-            <Link href="/albums">Albums</Link>
+            <Link href="/albums">{t.albums}</Link>
           </li>
           {username ? (
             <>
               <li>
-                <Link href="/profile">Profile</Link>
+                <Link href="/profile">{t.profile}</Link>
               </li>
               <li>
                 <button onClick={handleSignOut} className={classes.signOut}>
-                  Sign Out
+                  {t.signOut}
                 </button>
               </li>
             </>
           ) : (
             <>
               <li>
-                <Link href="/login">Login</Link>
+                <Link href="/login">{t.login}</Link>
               </li>
               <li>
-                <Link href="/signup">Sign Up</Link>
+                <Link href="/signup">{t.signup}</Link>
               </li>
             </>
           )}
