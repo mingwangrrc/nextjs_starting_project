@@ -1,7 +1,6 @@
 'use client';
 
-import { Table } from 'antd';
-import Link from 'next/link';
+import EditableTable from './editable-table';
 
 export default function TodosTable({ todos }) {
   const columns = [
@@ -9,15 +8,16 @@ export default function TodosTable({ todos }) {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      render: (text, record) => <Link href={`/todos/${record.id}`}>{text}</Link>,
+      editable: true,
+      renderLink: (record) => `/todos/${record.id}`,
     },
     {
       title: 'Completed',
       dataIndex: 'completed',
       key: 'completed',
-      render: completed => (completed ? 'Yes' : 'No'),
+      editable: true,
     },
   ];
 
-  return <Table dataSource={todos} columns={columns} rowKey="id" pagination={false} />;
+  return <EditableTable data={todos} columns={columns} rowKey="id" />;
 }

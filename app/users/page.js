@@ -2,8 +2,8 @@ import UsersTable from '@/components/users-table';
 
 export default async function UsersPage() {
   const response = await fetch('https://jsonplaceholder.typicode.com/users');
-  const users = await response.json();
-
+  const usersData = await response.json();
+  const users = usersData.map((user) => ({ ...user, city: user.address?.city }));
 
   return (
     <main>
@@ -12,4 +12,3 @@ export default async function UsersPage() {
     </main>
   );
 }
-
