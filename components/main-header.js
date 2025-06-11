@@ -20,6 +20,9 @@ export default function MainHeader() {
           <li>
             <Link href="/posts">Posts</Link>
           </li>
+          <li>
+            <Link href="/comments">Comments</Link>
+          </li>
         </ul>
       </nav>
     </header>
