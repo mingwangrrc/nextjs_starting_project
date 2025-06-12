@@ -58,6 +58,18 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     setFormData({});
   };
 
+  const persist = async (key, data) => {
+    try {
+      await fetch(`/api/save/${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+    } catch {
+      // ignore errors writing to disk
+    }
+  };
+
   const save = () => {
     setTableData((prev) => {
       const updated = prev.map((row) =>
@@ -65,6 +77,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
       );
       if (storageKey && typeof window !== 'undefined') {
         localStorage.setItem(storageKey, JSON.stringify(updated));
+        persist(storageKey, updated);
       }
       return updated;
     });
@@ -77,6 +90,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
       const updated = prev.filter((row) => row[rowKey] !== id);
       if (storageKey && typeof window !== 'undefined') {
         localStorage.setItem(storageKey, JSON.stringify(updated));
+        persist(storageKey, updated);
       }
       return updated;
     });

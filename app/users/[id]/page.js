@@ -1,7 +1,17 @@
 import Link from 'next/link';
+import { promises as fs } from 'fs';
+import path from 'path';
 export default async function UserDetailPage({ params }) {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/users/${params.id}`);
-  const user = await response.json();
+  const filePath = path.join('/Users/mingwang/Desktop', 'users.json');
+  let user;
+  try {
+    const file = await fs.readFile(filePath, 'utf-8');
+    const users = JSON.parse(file);
+    user = users.find((u) => u.id == params.id);
+  } catch {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/users/${params.id}`);
+    user = await response.json();
+  }
 
   return (
     <main>
