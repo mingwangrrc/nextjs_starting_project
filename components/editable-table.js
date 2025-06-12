@@ -5,6 +5,22 @@ import { Table, Input, Button, Checkbox, Popconfirm, Pagination } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 
+const getValue = (obj, path) =>
+  path.split('.').reduce((acc, key) => (acc ? acc[key] : undefined), obj);
+
+const setValue = (obj, path, value) => {
+  const keys = path.split('.');
+  const last = keys.pop();
+  const newObj = { ...obj };
+  let curr = newObj;
+  for (const k of keys) {
+    curr[k] = { ...(curr[k] || {}) };
+    curr = curr[k];
+  }
+  curr[last] = value;
+  return newObj;
+};
+
 export default function EditableTable({ data, columns, rowKey, storageKey }) {
   const [tableData, setTableData] = useState(data);
   const [editingId, setEditingId] = useState(null);
@@ -52,7 +68,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
   const edit = (record) => {
     if (!isLoggedIn) return;
     setEditingId(record[rowKey]);
-    setFormData(record);
+    setFormData(JSON.parse(JSON.stringify(record)));
   };
 
   const cancel = () => {
@@ -109,17 +125,21 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
   };
 
   const handleChange = (key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
+    setFormData((prev) => setValue(prev, key, value));
   };
 
   const addRow = () => {
     if (!isLoggedIn) return;
     const newId =
       tableData.reduce((max, row) => Math.max(max, row[rowKey]), 0) + 1;
-    const newRow = { [rowKey]: newId };
+    let newRow = { [rowKey]: newId };
     columns.forEach((col) => {
       if (col.dataIndex !== rowKey) {
-        newRow[col.dataIndex] = col.dataIndex === 'completed' ? false : '';
+        newRow = setValue(
+          newRow,
+          col.dataIndex,
+          col.dataIndex === 'completed' ? false : ''
+        );
       }
     });
     setTableData((prev) => [newRow, ...prev]);
@@ -131,7 +151,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
 
   const renderCell = (col, record) => {
     const isEditing = record[rowKey] === editingId;
-    const value = formData[col.dataIndex];
+    const value = getValue(formData, col.dataIndex);
     if (isEditing && col.editable !== false) {
       if (col.dataIndex === 'completed') {
         return (
@@ -154,14 +174,16 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
         typeof col.renderLink === 'function'
           ? col.renderLink(record)
           : col.renderLink;
-      return <Link href={href}>{record[col.dataIndex]}</Link>;
+      return <Link href={href}>{getValue(record, col.dataIndex)}</Link>;
     }
 
-    if (typeof record[col.dataIndex] === 'boolean') {
-      return record[col.dataIndex] ? 'Yes' : 'No';
+    const cellValue = getValue(record, col.dataIndex);
+
+    if (typeof cellValue === 'boolean') {
+      return cellValue ? 'Yes' : 'No';
     }
 
-    return record[col.dataIndex];
+    return cellValue;
   };
 
   const cols = columns.map((col) => ({
@@ -203,9 +225,14 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     });
   }
 
+  const collectValues = (obj) =>
+    Object.values(obj)
+      .map((v) => (v && typeof v === 'object' ? collectValues(v) : String(v)))
+      .join(' ');
+
   const filteredData = tableData.filter((row) => {
     if (!search) return true;
-    const values = Object.values(row).join(' ').toLowerCase();
+    const values = collectValues(row).toLowerCase();
     return values.includes(search.toLowerCase());
   });
   const pagedData = filteredData.slice(
