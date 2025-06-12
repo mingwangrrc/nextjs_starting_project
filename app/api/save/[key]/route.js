@@ -5,7 +5,7 @@ export async function POST(request, { params }) {
   try {
     const key = params.key;
     const data = await request.json();
-    const dir = '/Users/mingwang/Desktop';
+    const dir = process.cwd();
     const filePath = path.join(dir, `${key}.json`);
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));

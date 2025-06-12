@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 export default async function TodosPage() {
-  const filePath = path.join('/Users/mingwang/Desktop', 'todos.json');
+  const filePath = path.join(process.cwd(), 'todos.json');
   let todosData;
   try {
     const file = await fs.readFile(filePath, 'utf-8');
