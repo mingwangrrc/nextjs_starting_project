@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Table, Input, Button, Checkbox } from 'antd';
+import { Table, Input, Button, Checkbox, Popconfirm } from 'antd';
 import Link from 'next/link';
 
 export default function EditableTable({ data, columns, rowKey, storageKey }) {
@@ -65,6 +65,19 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     cancel();
   };
 
+  const deleteRow = (id) => {
+    setTableData((prev) => {
+      const updated = prev.filter((row) => row[rowKey] !== id);
+      if (storageKey && typeof window !== 'undefined') {
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+      }
+      return updated;
+    });
+    if (editingId === id) {
+      cancel();
+    }
+  };
+
   const handleChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
@@ -125,9 +138,19 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
             </Button>
           </>
         ) : (
-          <Button type="link" onClick={() => edit(record)}>
-            Edit
-          </Button>
+          <>
+            <Button type="link" onClick={() => edit(record)}>
+              Edit
+            </Button>
+            <Popconfirm
+              title="Delete this item?"
+              onConfirm={() => deleteRow(record[rowKey])}
+            >
+              <Button type="link" danger>
+                Delete
+              </Button>
+            </Popconfirm>
+          </>
         );
       },
     });
