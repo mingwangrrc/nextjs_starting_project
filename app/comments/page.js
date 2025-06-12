@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 export default async function CommentsPage() {
-  const filePath = path.join('/Users/mingwang/Desktop', 'comments.json');
+  const filePath = path.join(process.cwd(), 'comments.json');
   let commentsData;
   try {
     const file = await fs.readFile(filePath, 'utf-8');

@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 export default async function UsersPage() {
-  const filePath = path.join('/Users/mingwang/Desktop', 'users.json');
+  const filePath = path.join(process.cwd(), 'users.json');
   let usersData;
   try {
     const file = await fs.readFile(filePath, 'utf-8');
