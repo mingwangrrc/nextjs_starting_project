@@ -40,6 +40,7 @@ function LoginPageClient() {
         includeUsername
         includeEmail={false}
         onSubmit={handleLogin}
+        variant="filled"
       />
     </main>
   );

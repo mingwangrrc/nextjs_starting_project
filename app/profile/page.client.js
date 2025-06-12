@@ -71,6 +71,7 @@ function ProfilePageClient() {
         includeUsername
         initialValues={initialValues}
         onSubmit={handleSave}
+        variant="filled"
       />
     </main>
   );
