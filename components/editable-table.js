@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Table, Input, Button, Checkbox, Popconfirm } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Table, Input, Button, Checkbox, Popconfirm, Pagination } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 
@@ -12,6 +12,12 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
   const [search, setSearch] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [addedRowId, setAddedRowId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, tableData.length]);
 
   useEffect(() => {
     if (!storageKey || typeof window === 'undefined') return;
@@ -116,7 +122,8 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
         newRow[col.dataIndex] = col.dataIndex === 'completed' ? false : '';
       }
     });
-    setTableData((prev) => [...prev, newRow]);
+    setTableData((prev) => [newRow, ...prev]);
+    setCurrentPage(1);
     setEditingId(newId);
     setFormData(newRow);
     setAddedRowId(newId);
@@ -201,6 +208,10 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     const values = Object.values(row).join(' ').toLowerCase();
     return values.includes(search.toLowerCase());
   });
+  const pagedData = filteredData.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <>
@@ -212,10 +223,17 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
         allowClear
       />
       <Table
-        dataSource={filteredData}
+        dataSource={pagedData}
         columns={cols}
         rowKey={rowKey}
         pagination={false}
+      />
+      <Pagination
+        current={currentPage}
+        pageSize={pageSize}
+        total={filteredData.length}
+        onChange={(page) => setCurrentPage(page)}
+        style={{ marginTop: 16, textAlign: 'right' }}
       />
       {isLoggedIn && (
         <Button
