@@ -19,6 +19,7 @@ Open `http://localhost:3000` in your browser to view the app.
 
 - Lists of users, posts, todos, comments and albums
 - Editable table rows for all lists (login required)
+- Delete table rows when logged in
 - Search tables by any field
 - Editable tags for each row
 - User login with sign out option
