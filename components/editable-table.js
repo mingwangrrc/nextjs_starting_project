@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, Checkbox, Popconfirm, Pagination } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Link from 'next/link';
+import supabase from '@/lib/supabase';
 
 const getValue = (obj, path) =>
   path.split('.').reduce((acc, key) => (acc ? acc[key] : undefined), obj);
@@ -92,7 +93,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     }
   };
 
-  const save = () => {
+  const save = async () => {
     setTableData((prev) => {
       const updated = prev.map((row) =>
         row[rowKey] === editingId ? formData : row
@@ -103,11 +104,25 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
       }
       return updated;
     });
+    if (storageKey === 'locations') {
+      try {
+        if (addedRowId) {
+          await supabase.from('locations').insert(formData);
+        } else {
+          await supabase
+            .from('locations')
+            .update(formData)
+            .eq('id', editingId);
+        }
+      } catch {
+        // ignore errors updating supabase
+      }
+    }
     setAddedRowId(null);
     cancel();
   };
 
-  const deleteRow = (id) => {
+  const deleteRow = async (id) => {
     setTableData((prev) => {
       const updated = prev.filter((row) => row[rowKey] !== id);
       if (storageKey && typeof window !== 'undefined') {
@@ -116,6 +131,13 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
       }
       return updated;
     });
+    if (storageKey === 'locations') {
+      try {
+        await supabase.from('locations').delete().eq('id', id);
+      } catch {
+        // ignore errors deleting from supabase
+      }
+    }
     if (editingId === id) {
       cancel();
     }
