@@ -22,8 +22,9 @@ const setValue = (obj, path, value) => {
   return newObj;
 };
 
-export default function EditableTable({ data, columns, rowKey, storageKey }) {
-  const [tableData, setTableData] = useState(data);
+export default function EditableTable({ data = [], columns, rowKey, storageKey }) {
+  const initialData = Array.isArray(data) ? data : [];
+  const [tableData, setTableData] = useState(initialData);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({});
   const [search, setSearch] = useState('');
@@ -41,15 +42,16 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     const stored = localStorage.getItem(storageKey);
     if (stored) {
       try {
-        setTableData(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        setTableData(Array.isArray(parsed) ? parsed : []);
       } catch {
         localStorage.removeItem(storageKey);
-        localStorage.setItem(storageKey, JSON.stringify(data));
+        localStorage.setItem(storageKey, JSON.stringify(initialData));
       }
     } else {
-      localStorage.setItem(storageKey, JSON.stringify(data));
+      localStorage.setItem(storageKey, JSON.stringify(initialData));
     }
-  }, [data, storageKey]);
+  }, [initialData, storageKey]);
 
   useEffect(() => {
     const updateLogin = () => {
