@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Table, Input, Button, Checkbox, Popconfirm } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 
 export default function EditableTable({ data, columns, rowKey, storageKey }) {
@@ -10,6 +11,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
   const [formData, setFormData] = useState({});
   const [search, setSearch] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [addedRowId, setAddedRowId] = useState(null);
 
   useEffect(() => {
     if (!storageKey || typeof window === 'undefined') return;
@@ -48,6 +50,10 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
   };
 
   const cancel = () => {
+    if (addedRowId) {
+      setTableData((prev) => prev.filter((row) => row[rowKey] !== addedRowId));
+      setAddedRowId(null);
+    }
     setEditingId(null);
     setFormData({});
   };
@@ -62,6 +68,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
       }
       return updated;
     });
+    setAddedRowId(null);
     cancel();
   };
 
@@ -76,10 +83,29 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     if (editingId === id) {
       cancel();
     }
+    if (addedRowId === id) {
+      setAddedRowId(null);
+    }
   };
 
   const handleChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const addRow = () => {
+    if (!isLoggedIn) return;
+    const newId =
+      tableData.reduce((max, row) => Math.max(max, row[rowKey]), 0) + 1;
+    const newRow = { [rowKey]: newId };
+    columns.forEach((col) => {
+      if (col.dataIndex !== rowKey) {
+        newRow[col.dataIndex] = col.dataIndex === 'completed' ? false : '';
+      }
+    });
+    setTableData((prev) => [...prev, newRow]);
+    setEditingId(newId);
+    setFormData(newRow);
+    setAddedRowId(newId);
   };
 
   const renderCell = (col, record) => {
@@ -177,6 +203,15 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
         rowKey={rowKey}
         pagination={false}
       />
+      {isLoggedIn && (
+        <Button
+          type="primary"
+          shape="circle"
+          icon={<PlusOutlined />}
+          onClick={addRow}
+          style={{ position: 'fixed', bottom: 24, right: 24 }}
+        />
+      )}
     </>
   );
 }
