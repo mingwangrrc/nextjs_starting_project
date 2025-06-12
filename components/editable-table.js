@@ -240,15 +240,41 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
     currentPage * pageSize
   );
 
+  const tableName = storageKey
+    ? storageKey.charAt(0).toUpperCase() + storageKey.slice(1)
+    : '';
+
   return (
     <>
-      <Input
-        placeholder="Search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{ marginBottom: 16 }}
-        allowClear
-      />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: 16,
+        }}
+      >
+        <Input
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          allowClear
+          style={{ marginRight: 8 }}
+        />
+        {isLoggedIn && (
+          <Button
+            icon={<PlusOutlined />}
+            onClick={addRow}
+            style={{
+              backgroundColor: '#55ab68',
+              borderColor: '#55ab68',
+              borderRadius: 30,
+              color: '#fff',
+            }}
+          >
+            {tableName}
+          </Button>
+        )}
+      </div>
       <Table
         dataSource={pagedData}
         columns={cols}
@@ -262,15 +288,7 @@ export default function EditableTable({ data, columns, rowKey, storageKey }) {
         onChange={(page) => setCurrentPage(page)}
         style={{ marginTop: 16, textAlign: 'right' }}
       />
-      {isLoggedIn && (
-        <Button
-          type="primary"
-          shape="circle"
-          icon={<PlusOutlined />}
-          onClick={addRow}
-          style={{ position: 'fixed', bottom: 24, right: 24 }}
-        />
-      )}
+      {/* Add button moved to the header */}
     </>
   );
 }
