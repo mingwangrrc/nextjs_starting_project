@@ -5,9 +5,18 @@ export const metadata = {
   title: 'Supabase Table',
 };
 
+// Force this route to be dynamic so Supabase queries run on every request
+export const dynamic = 'force-dynamic';
+
 export default async function SupabasePage() {
   const columns = ['id', 'address', 'path_id', 'names'];
-  const { data } = await supabase.from('Test_Address').select(columns.join(', '));
+  const { data, error } = await supabase
+    .from('Test_Address')
+    .select(columns.join(', '));
+
+  if (error) {
+    console.error('Supabase error:', error.message);
+  }
 
   return (
     <main>
