@@ -6,8 +6,7 @@ export const metadata = {
 };
 
 export default async function SupabasePage() {
-  const { data, error } = await supabase.from('Test_Address').select('*');
-  console.log('Fetched from Supabase:', data, error);
+  const { data } = await supabase.from('Test_Address').select('*');
 
   return (
     <main>
