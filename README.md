@@ -9,9 +9,13 @@ Install dependencies and start the development server:
 ```bash
 cd ~/desktop
 cd nextjs_starting_project
+cp .env.example .env
 npm install
 npm run dev
 ```
+
+The `.env` file provides the Supabase credentials used by the app. Adjust these
+values if you wish to connect to your own Supabase project.
 
 Open `http://localhost:3000` in your browser to view the app.
 
