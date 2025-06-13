@@ -18,6 +18,7 @@ export default function MainHeader() {
       comments: 'Comments',
       todos: 'Todos',
       albums: 'Albums',
+      supabase: 'Supabase',
       login: 'Login',
       signup: 'Sign Up',
       profile: 'Profile',
@@ -30,6 +31,7 @@ export default function MainHeader() {
       comments: 'Commentaires',
       todos: 'Tâches',
       albums: 'Albums',
+      supabase: 'Supabase',
       login: 'Connexion',
       signup: "S'inscrire",
       profile: 'Profil',
@@ -104,6 +106,9 @@ export default function MainHeader() {
           </li>
           <li>
             <Link href="/albums">{t.albums}</Link>
+          </li>
+          <li>
+            <Link href="/test-address">{t.supabase}</Link>
           </li>
           {username ? (
             <>
