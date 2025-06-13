@@ -15,13 +15,6 @@ npm run dev
 
 Open `http://localhost:3000` in your browser to view the app.
 
-Create a `.env.local` file with your Supabase credentials:
-
-```bash
-NEXT_PUBLIC_SUPABASE_URL=<your-supabase-url>
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
-```
-
 ## Features
 
 - Lists of users, posts, todos, comments and albums
@@ -31,8 +24,6 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 - Editable tags for each row
 - User login with sign out option
 - Profile page to edit your account details
-- Locations table syncs with Supabase in real time
-- Supabase Locations page at `/db-table`
 
 ## Build
 

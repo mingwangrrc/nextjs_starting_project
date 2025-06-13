@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, Checkbox, Popconfirm, Pagination } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Link from 'next/link';
-import supabase from '@/lib/supabase';
 
 const getValue = (obj, path) =>
   path.split('.').reduce((acc, key) => (acc ? acc[key] : undefined), obj);
@@ -22,9 +21,8 @@ const setValue = (obj, path, value) => {
   return newObj;
 };
 
-export default function EditableTable({ data = [], columns, rowKey, storageKey }) {
-  const initialData = Array.isArray(data) ? data : [];
-  const [tableData, setTableData] = useState(initialData);
+export default function EditableTable({ data, columns, rowKey, storageKey }) {
+  const [tableData, setTableData] = useState(data);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({});
   const [search, setSearch] = useState('');
@@ -42,16 +40,15 @@ export default function EditableTable({ data = [], columns, rowKey, storageKey }
     const stored = localStorage.getItem(storageKey);
     if (stored) {
       try {
-        const parsed = JSON.parse(stored);
-        setTableData(Array.isArray(parsed) ? parsed : []);
+        setTableData(JSON.parse(stored));
       } catch {
         localStorage.removeItem(storageKey);
-        localStorage.setItem(storageKey, JSON.stringify(initialData));
+        localStorage.setItem(storageKey, JSON.stringify(data));
       }
     } else {
-      localStorage.setItem(storageKey, JSON.stringify(initialData));
+      localStorage.setItem(storageKey, JSON.stringify(data));
     }
-  }, [initialData, storageKey]);
+  }, [data, storageKey]);
 
   useEffect(() => {
     const updateLogin = () => {
@@ -95,7 +92,7 @@ export default function EditableTable({ data = [], columns, rowKey, storageKey }
     }
   };
 
-  const save = async () => {
+  const save = () => {
     setTableData((prev) => {
       const updated = prev.map((row) =>
         row[rowKey] === editingId ? formData : row
@@ -106,25 +103,11 @@ export default function EditableTable({ data = [], columns, rowKey, storageKey }
       }
       return updated;
     });
-    if (storageKey === 'locations') {
-      try {
-        if (addedRowId) {
-          await supabase.from('locations').insert(formData);
-        } else {
-          await supabase
-            .from('locations')
-            .update(formData)
-            .eq('id', editingId);
-        }
-      } catch {
-        // ignore errors updating supabase
-      }
-    }
     setAddedRowId(null);
     cancel();
   };
 
-  const deleteRow = async (id) => {
+  const deleteRow = (id) => {
     setTableData((prev) => {
       const updated = prev.filter((row) => row[rowKey] !== id);
       if (storageKey && typeof window !== 'undefined') {
@@ -133,13 +116,6 @@ export default function EditableTable({ data = [], columns, rowKey, storageKey }
       }
       return updated;
     });
-    if (storageKey === 'locations') {
-      try {
-        await supabase.from('locations').delete().eq('id', id);
-      } catch {
-        // ignore errors deleting from supabase
-      }
-    }
     if (editingId === id) {
       cancel();
     }
@@ -264,15 +240,41 @@ export default function EditableTable({ data = [], columns, rowKey, storageKey }
     currentPage * pageSize
   );
 
+  const tableName = storageKey
+    ? storageKey.charAt(0).toUpperCase() + storageKey.slice(1)
+    : '';
+
   return (
     <>
-      <Input
-        placeholder="Search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{ marginBottom: 16 }}
-        allowClear
-      />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: 16,
+        }}
+      >
+        <Input
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          allowClear
+          style={{ marginRight: 8 }}
+        />
+        {isLoggedIn && (
+          <Button
+            icon={<PlusOutlined />}
+            onClick={addRow}
+            style={{
+              backgroundColor: '#55ab68',
+              borderColor: '#55ab68',
+              borderRadius: 30,
+              color: '#fff',
+            }}
+          >
+            {tableName}
+          </Button>
+        )}
+      </div>
       <Table
         dataSource={pagedData}
         columns={cols}
@@ -286,15 +288,7 @@ export default function EditableTable({ data = [], columns, rowKey, storageKey }
         onChange={(page) => setCurrentPage(page)}
         style={{ marginTop: 16, textAlign: 'right' }}
       />
-      {isLoggedIn && (
-        <Button
-          type="primary"
-          shape="circle"
-          icon={<PlusOutlined />}
-          onClick={addRow}
-          style={{ position: 'fixed', bottom: 24, right: 24 }}
-        />
-      )}
+      {/* Add button moved to the header */}
     </>
   );
 }
