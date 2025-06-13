@@ -108,7 +108,7 @@ export default function MainHeader() {
             <Link href="/albums">{t.albums}</Link>
           </li>
           <li>
-            <Link href="/test-address">{t.supabase}</Link>
+            <Link href="/supabase">{t.supabase}</Link>
           </li>
           {username ? (
             <>
