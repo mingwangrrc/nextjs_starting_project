@@ -19,6 +19,7 @@ export default function MainHeader() {
       todos: 'Todos',
       albums: 'Albums',
       locations: 'Locations',
+      dbtable: 'Supabase',
       login: 'Login',
       signup: 'Sign Up',
       profile: 'Profile',
@@ -32,6 +33,7 @@ export default function MainHeader() {
       todos: 'Tâches',
       albums: 'Albums',
       locations: 'Lieux',
+      dbtable: 'Supabase',
       login: 'Connexion',
       signup: "S'inscrire",
       profile: 'Profil',
@@ -109,6 +111,9 @@ export default function MainHeader() {
           </li>
           <li>
             <Link href="/locations">{t.locations}</Link>
+          </li>
+          <li>
+            <Link href="/db-table">{t.dbtable}</Link>
           </li>
           {username ? (
             <>
