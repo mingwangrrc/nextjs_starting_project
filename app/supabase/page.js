@@ -6,7 +6,8 @@ export const metadata = {
 };
 
 export default async function SupabasePage() {
-  const { data } = await supabase.from('Test_Address').select('*');
+  const columns = ['id', 'address', 'path_id', 'names'];
+  const { data } = await supabase.from('Test_Address').select(columns.join(', '));
 
   return (
     <main>
