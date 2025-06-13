@@ -32,6 +32,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 - User login with sign out option
 - Profile page to edit your account details
 - Locations table syncs with Supabase in real time
+- Supabase Locations page at `/db-table`
 
 ## Build
 
